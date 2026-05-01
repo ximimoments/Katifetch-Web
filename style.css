@@ -60,3 +60,20 @@ body {
     0% { background-position: 0%; }
     100% { background-position: 200%; }
 }
+
+/* 📱🔥 MOBILE FIX (LO QUE TE FALTABA) */
+@media (max-width: 768px) {
+    .fetch-container {
+        flex-direction: column;   /* 👈 clave */
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .ascii-logo {
+        font-size: 12px; /* opcional: mejor escala */
+    }
+
+    .fetch-info {
+        width: 100%;
+    }
+}
