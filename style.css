@@ -1,0 +1,62 @@
+body {
+    background: #000;
+    color: #e0e0e0;
+    font-family: "Courier New", monospace;
+    margin: 0;
+    padding: 0;
+}
+
+.terminal-container {
+    padding: 15px;
+}
+
+/* 🔥 NEOFETCH LAYOUT */
+.fetch-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+    margin: 15px 0;
+}
+
+/* ASCII */
+.ascii-logo {
+    font-size: 15px;
+    line-height: 1.1;
+    white-space: pre;
+}
+
+/* INFO */
+.fetch-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* colores */
+.key { color: #00ff66; }
+.val { color: #fff; }
+
+/* cursor */
+.blink {
+    animation: blink 1s infinite;
+    color: #00ff66;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* lolcat */
+.lolcat {
+    background: linear-gradient(to right,
+        red, orange, yellow, green, cyan, blue, violet
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 5s linear infinite;
+}
+
+@keyframes rainbow {
+    0% { background-position: 0%; }
+    100% { background-position: 200%; }
+}

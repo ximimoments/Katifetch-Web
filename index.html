@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katifetch Dev</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="terminal-container">
+    
+    <div id="terminal-output">
+        <p class="val">Katifetch Shell v0.0.1-dev</p>
+        <p>Type <span class="key">'help'</span> to see available commands.</p>
+        <br>
+    </div>
+
+    <div class="input-line">
+        <span class="key">root@android:~/katifetch-app#</span>
+        <span id="current-typing"></span><span class="blink">_</span>
+    </div>
+
+    <input type="text" id="tex-input"
+        style="position: fixed; opacity: 0; pointer-events: none;"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false">
+</div>
+
+<script>
+const input = document.getElementById('tex-input');
+const display = document.getElementById('current-typing');
+const output = document.getElementById('terminal-output');
+
+function focusInput() {
+    input.focus();
+}
+
+document.addEventListener('click', focusInput);
+
+window.onload = () => {
+    setTimeout(() => input.focus(), 100);
+};
+
+setInterval(() => {
+    if (document.activeElement !== input) {
+        input.focus();
+    }
+}, 500);
+
+input.addEventListener('input', () => {
+    display.innerText = input.value;
+});
+
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        const cmd = input.value.toLowerCase().trim();
+        executeCommand(cmd);
+        input.value = "";
+        display.innerText = "";
+        focusInput();
+    }
+});
+
+function appendHTML(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    output.appendChild(div);
+}
+
+function runKatifetch(useLolcat = false) {
+
+    const ua = navigator.userAgent;
+
+    // ⏱ Uptime (desde que abriste la página)
+    if (!window.startTime) window.startTime = Date.now();
+    let uptimeSec = Math.floor((Date.now() - window.startTime) / 1000);
+    let uptime = `${Math.floor(uptimeSec/60)}m ${uptimeSec%60}s`;
+
+    // 🧠 OS
+    let os = "Unknown";
+    if (/android/i.test(ua)) os = "Android";
+    else if (/windows/i.test(ua)) os = "Windows";
+    else if (/linux/i.test(ua)) os = "Linux";
+    else if (/mac/i.test(ua)) os = "macOS";
+
+    // 🌐 Browser
+    let browser = "Unknown";
+    if (ua.includes("wv") || (ua.includes("Version/") && ua.includes("Chrome"))) {
+        browser = "Android WebView";
+    } else if (ua.includes("Firefox")) {
+        browser = "Firefox";
+    } else if (ua.includes("Chrome")) {
+        browser = "Chrome";
+    } else if (ua.includes("Safari")) {
+        browser = "Safari";
+    }
+
+    // ⚙️ Engine
+    let engine = "Unknown";
+    if (ua.includes("Gecko") && !ua.includes("Chrome")) {
+        engine = "Gecko";
+    } else if (ua.includes("AppleWebKit")) {
+        engine = "Blink/WebKit";
+    }
+
+    // 🔍 WebView version
+    let webview = null;
+    let chromeMatch = ua.match(/Chrome\/([0-9\.]+)/);
+    let chromiumMatch = ua.match(/Chromium\/([0-9\.]+)/);
+
+    if (chromeMatch) webview = chromeMatch[1];
+    else if (chromiumMatch) webview = chromiumMatch[1];
+
+    let webviewText = "";
+
+    if (webview && browser !== "Firefox") {
+        webviewText = "Chrome " + webview;
+    } else if (ua.includes("wv")) {
+        webviewText = "System WebView (hidden)";
+    } else {
+        webviewText = "N/A (" + engine + ")";
+    }
+
+    // 🔧 Hardware
+    let ram = navigator.deviceMemory ? navigator.deviceMemory + " GB" : "?";
+    let cores = navigator.hardwareConcurrency || "?";
+
+    // 🖥 Screen
+    let resolution = `${screen.width}x${screen.height}`;
+
+    appendHTML(`
+<div class="fetch-container">
+
+<pre class="ascii-logo ${useLolcat ? "lolcat" : ""}">
+  _  __     _   _  __     __      _ 
+ | |/ /__ _| |_(_)/ _|___| |_ ___| |__
+ | ' // _\` | __| | |_/ _ \\ __/ __| '_ \\
+ | . \\ (_| | |_| |  _|  __/ || (__| | | |
+ |_|\\_\\__,_|\\__|_|_|  \\___|\\__\\___|_| |_|
+</pre>
+
+<div class="fetch-info">
+    <p><span class="key">OS:</span> ${os}</p>
+    <p><span class="key">Browser:</span> ${browser}</p>
+    <p><span class="key">WebView:</span> ${webviewText}</p>
+    <p><span class="key">Engine:</span> ${engine}</p>
+    <p><span class="key">Uptime:</span> ${uptime}</p>
+    <p><span class="key">Resolution:</span> ${resolution}</p>
+    <p><span class="key">CPU Cores:</span> ${cores}</p>
+    <p><span class="key">RAM:</span> ${ram}</p>
+    <p><span class="key">Platform:</span> ${navigator.platform}</p>
+    <p><span class="key">Shell:</span> katifetch-web</p>
+</div>
+
+</div>
+    `);
+}
+// 🔥 COMANDOS
+function executeCommand(cmd) {
+
+    const line = document.createElement('p');
+    line.innerHTML = `<span class="key">root@android:~/katifetch-app#</span> <span class="val">${cmd}</span>`;
+    output.appendChild(line);
+
+    let parts = cmd.split("|").map(p => p.trim());
+    let baseCmd = parts[0];
+    let pipe = parts[1] || null;
+
+    switch(baseCmd) {
+
+        case 'help':
+            appendHTML(`
+                <div>
+                    <p style="color:#e8b71d;">--- HELP MENU ---</p>
+                    <p><span class="key">help</span> - Show this menu</p>
+                    <p><span class="key">katifetch</span> - Run system fetch</p>
+                    <p><span class="key">katifetch | lolcat</span> - Rainbow mode 🌈</p>
+                    <p><span class="key">clear</span> - Clear terminal</p>
+                </div>
+            `);
+            break;
+
+        case 'katifetch':
+            runKatifetch(pipe === "lolcat");
+            break;
+
+        case 'clear':
+            output.innerHTML = "";
+            break;
+
+        case '':
+            break;
+
+        default:
+            appendHTML(`<p style="color:#ff3333;">sh: command not found: ${cmd}</p>`);
+    }
+
+    window.scrollTo(0, document.body.scrollHeight);
+}
+</script>
+
+</body>
+</html>
