@@ -10,26 +10,28 @@ body {
     padding: 15px;
 }
 
-/* 🔥 NEOFETCH LAYOUT */
+/* 🔥 KATIFETCH LAYOUT (VERTICAL SIEMPRE) */
 .fetch-container {
     display: flex;
+    flex-direction: column; /* 🔥 esto cambia todo */
     align-items: flex-start;
-    gap: 25px;
+    gap: 10px;
     margin: 15px 0;
 }
 
 /* ASCII */
 .ascii-logo {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.1;
     white-space: pre;
+    margin-bottom: 5px;
 }
 
 /* INFO */
 .fetch-info {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 /* colores */
@@ -59,21 +61,4 @@ body {
 @keyframes rainbow {
     0% { background-position: 0%; }
     100% { background-position: 200%; }
-}
-
-/* 📱🔥 MOBILE FIX (LO QUE TE FALTABA) */
-@media (max-width: 768px) {
-    .fetch-container {
-        flex-direction: column;   /* 👈 clave */
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .ascii-logo {
-        font-size: 12px; /* opcional: mejor escala */
-    }
-
-    .fetch-info {
-        width: 100%;
-    }
 }
