@@ -10,16 +10,14 @@ body {
     padding: 15px;
 }
 
-/* 🔥 KATIFETCH LAYOUT (VERTICAL SIEMPRE) */
 .fetch-container {
     display: flex;
-    flex-direction: column; /* 🔥 esto cambia todo */
+    flex-direction: column; 
     align-items: flex-start;
     gap: 10px;
     margin: 15px 0;
 }
 
-/* ASCII */
 .ascii-logo {
     font-size: 14px;
     line-height: 1.1;
@@ -27,18 +25,15 @@ body {
     margin-bottom: 5px;
 }
 
-/* INFO */
 .fetch-info {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
 
-/* colores */
 .key { color: #00ff66; }
 .val { color: #fff; }
 
-/* cursor */
 .blink {
     animation: blink 1s infinite;
     color: #00ff66;
@@ -48,7 +43,6 @@ body {
     50% { opacity: 0; }
 }
 
-/* lolcat */
 .lolcat {
     background: linear-gradient(to right,
         red, orange, yellow, green, cyan, blue, violet
