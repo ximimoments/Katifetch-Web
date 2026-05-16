@@ -12,13 +12,13 @@
 <div class="terminal-container">
     
     <div id="terminal-output">
-        <p class="val">Katifetch Shell v0.0.1-dev</p>
+        <p class="val">Katifetch Shell v0.0.2-dev</p>
         <p>Type <span class="key">'help'</span> to see available commands.</p>
         <br>
     </div>
 
     <div class="input-line">
-        <span class="key">root@android:~/katifetch-app#</span>
+        <span class="key">root@web:~/katifetch-website#</span>
         <span id="current-typing"></span><span class="blink">_</span>
     </div>
 
@@ -75,19 +75,16 @@ function runKatifetch(useLolcat = false) {
 
     const ua = navigator.userAgent;
 
-    // ⏱ Uptime (desde que abriste la página)
     if (!window.startTime) window.startTime = Date.now();
     let uptimeSec = Math.floor((Date.now() - window.startTime) / 1000);
     let uptime = `${Math.floor(uptimeSec/60)}m ${uptimeSec%60}s`;
 
-    // 🧠 OS
     let os = "Unknown";
     if (/android/i.test(ua)) os = "Android";
     else if (/windows/i.test(ua)) os = "Windows";
     else if (/linux/i.test(ua)) os = "Linux";
     else if (/mac/i.test(ua)) os = "macOS";
 
-    // 🌐 Browser
     let browser = "Unknown";
     if (ua.includes("wv") || (ua.includes("Version/") && ua.includes("Chrome"))) {
         browser = "Android WebView";
@@ -99,7 +96,6 @@ function runKatifetch(useLolcat = false) {
         browser = "Safari";
     }
 
-    // ⚙️ Engine
     let engine = "Unknown";
     if (ua.includes("Gecko") && !ua.includes("Chrome")) {
         engine = "Gecko";
@@ -107,7 +103,6 @@ function runKatifetch(useLolcat = false) {
         engine = "Blink/WebKit";
     }
 
-    // 🔍 WebView version
     let webview = null;
     let chromeMatch = ua.match(/Chrome\/([0-9\.]+)/);
     let chromiumMatch = ua.match(/Chromium\/([0-9\.]+)/);
@@ -125,11 +120,9 @@ function runKatifetch(useLolcat = false) {
         webviewText = "N/A (" + engine + ")";
     }
 
-    // 🔧 Hardware
     let ram = navigator.deviceMemory ? navigator.deviceMemory + " GB" : "?";
     let cores = navigator.hardwareConcurrency || "?";
 
-    // 🖥 Screen
     let resolution = `${screen.width}x${screen.height}`;
 
     appendHTML(`
@@ -159,8 +152,8 @@ function runKatifetch(useLolcat = false) {
 </div>
     `);
 }
-// 🔥 COMANDOS
-function executeCommand(cmd) {
+
+    function executeCommand(cmd) {
 
     const line = document.createElement('p');
     line.innerHTML = `<span class="key">root@android:~/katifetch-app#</span> <span class="val">${cmd}</span>`;
